@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+    addrulepath="/administrator/components/com_whatson/models/rules"
+    addfieldpath="/administrator/components/com_whatson/models/fields"
+>
+    <fieldset
+        name="inputs"
+        label="COM_WHATSON_FIELDSET_MAIN_LABEL"
+    >
+        <field
+            name="id"
+            type="hidden"
+        />
+        <field
+            name="title"
+            type="text"
+            size="30"
+            label="COM_WHATSON_TITLE_LABEL"
+            description="COM_WHATSON_TITLE_DESC"
+            filter="string"
+            required="true"
+            class=""
+            labelclass=""
+        />
+        <field
+            name="alias"
+            type="text"
+            size="30"
+            label="COM_WHATSON_ALIAS_LABEL"
+            description="COM_WHATSON_ALIAS_DESC"
+            filter="string"
+            required="true"
+            class=""
+            labelclass=""
+        />
+    </fieldset>
+</form>
