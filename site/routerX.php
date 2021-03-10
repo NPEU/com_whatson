@@ -271,7 +271,7 @@ class WhatsOnRouter extends JComponentRouterBase
 
         #$session = JFactory::getSession();
         #echo '<pre>'; var_dump($session); echo '</pre>'; exit;
-        #echo '<pre>'; var_dump($segments); echo '</pre>'; #exit;
+        echo '<pre>'; var_dump($segments); echo '</pre>'; #exit;
         $app   = JFactory::getApplication();
         $state_ids = $app->getUserState('com_whatson.edit.entry.id');
         #echo '<pre>'; var_dump($state); echo '</pre>'; exit;

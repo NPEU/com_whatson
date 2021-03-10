@@ -27,13 +27,13 @@ class WhatsOnTableWhatsOn extends JTable
      *
      * @param   JDatabaseDriver  &$db  A database connector object
      */
-    /*public function __construct(&$db)
+    public function __construct(&$db)
     {
         parent::__construct('#__whatson', 'id', $db);
 
         // Set the alias since the column is called state
-        $this->setColumnAlias('published', 'state');
-    }*/
+        #$this->setColumnAlias('published', 'state');
+    }
 
     /**
      * Overloaded check method to ensure data integrity.
@@ -98,7 +98,7 @@ class WhatsOnTableWhatsOn extends JTable
      * @return      null|string     null is operation was satisfactory, otherwise returns an error
      * @see JTable:bind
      */
-    public function bind($array, $ignore = '')
+    /*public function bind($array, $ignore = '')
     {
         /*if (isset($array['params']) && is_array($array['params']))
         {
@@ -106,10 +106,10 @@ class WhatsOnTableWhatsOn extends JTable
             $parameter = new JRegistry;
             $parameter->loadArray($array['params']);
             $array['params'] = (string) $parameter;
-        }*/
-        $array['date_readable'] = date('Y-m-d H:i:s', $array['date']);
+        }* /
+        $array['start_date_readable'] = date('Y-m-d H:i:s', $array['date']);
         return parent::bind($array, $ignore);
-    }
+    }*/
 
     /**
      * Overloaded load function

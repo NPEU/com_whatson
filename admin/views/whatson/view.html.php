@@ -29,13 +29,13 @@ class WhatsOnViewWhatsOn extends JViewLegacy
      */
     function display($tpl = null)
     {
+        /*
         $this->state         = $this->get('State');
         $this->items         = $this->get('Items');
         $this->pagination    = $this->get('Pagination');
         $this->filterForm    = $this->get('FilterForm');
         $this->activeFilters = $this->get('ActiveFilters');
 
-        WhatsOnHelper::addSubmenu('whatson');
 
         // Check for errors.
         if (count($errors = $this->get('Errors')))
@@ -43,9 +43,9 @@ class WhatsOnViewWhatsOn extends JViewLegacy
             JError::raiseError(500, implode("\n", $errors));
             return false;
         }
-
+        */
         $this->addToolbar();
-        $this->sidebar = JHtmlSidebar::render();
+        #$this->sidebar = JHtmlSidebar::render();
         parent::display($tpl);
     }
 
@@ -56,18 +56,19 @@ class WhatsOnViewWhatsOn extends JViewLegacy
      */
     protected function addToolBar()
     {
+
         //$canDo = WhatsOnHelper::getActions();
         $canDo = JHelperContent::getActions('com_whatson');
         $user  = JFactory::getUser();
 
         $title = JText::_('COM_WHATSON_MANAGER_RECORDS');
-
+        /*
         if ($this->pagination->total) {
             $title .= "<span style='font-size: 0.5em; vertical-align: middle;'> (" . $this->pagination->total . ")</span>";
         }
-
+        */
         // Note 'question-circle' is an icon/classname. Change to suit in all views.
-        JToolBarHelper::title($title, 'question-circle');
+        JToolBarHelper::title($title, 'calendar');
         /*
         JToolBarHelper::addNew('entry.add');
         if (!empty($this->items)) {
@@ -75,6 +76,7 @@ class WhatsOnViewWhatsOn extends JViewLegacy
             JToolBarHelper::deleteList('', 'whatson.delete');
         }
         */
+        /*
         if ($canDo->get('core.create') || count($user->getAuthorisedCategories('com_whatson', 'core.create')) > 0) {
             JToolbarHelper::addNew('entry.add');
         }
@@ -103,11 +105,12 @@ class WhatsOnViewWhatsOn extends JViewLegacy
         {
             JToolbarHelper::trash('whatson.trash');
         }
-
+        */
         if ($user->authorise('core.admin', 'com_whatson') || $user->authorise('core.options', 'com_whatson'))
         {
             JToolbarHelper::preferences('com_whatson');
         }
+
     }
 
     /**
@@ -126,7 +129,7 @@ class WhatsOnViewWhatsOn extends JViewLegacy
      *
      * @return  array  Array containing the field name to sort by as the key and display text as value
      */
-    protected function getSortFields()
+    /*protected function getSortFields()
     {
         return array(
             'a.title' => JText::_('COM_WHATSON_RECORDS_NAME'),
@@ -134,5 +137,5 @@ class WhatsOnViewWhatsOn extends JViewLegacy
             'a.state' => JText::_('COM_WHATSON_PUBLISHED'),
             'a.id'    => JText::_('COM_WHATSON_ID')
         );
-    }
+    }*/
 }

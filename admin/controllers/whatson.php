@@ -23,8 +23,8 @@ class WhatsOnControllerWhatsOn extends JControllerAdmin
      *
      * @return  object  The model.
      */
-    public function getModel($name = 'Entry', $prefix = 'WhatsOnModel', $config = array('ignore_request' => true))
+    /*public function getModel($name = 'Entry', $prefix = 'WhatsOnModel', $config = array('ignore_request' => true))
     {
         return parent::getModel($name, $prefix, $config);
-    }
+    }*/
 }

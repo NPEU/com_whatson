@@ -4,72 +4,72 @@
     addfieldpath="/administrator/components/com_whatson/models/fields"
 >
     <fieldset
-        name="main"
-        label="COM_WHATSON_FIELDSET_MAIN_LABEL"
+        name="hidden"
     >
         <field
             name="id"
             type="hidden"
         />
         <field
-            name="title"
-            type="text"
-            size="30"
-            label="COM_WHATSON_TITLE_LABEL"
-            description="COM_WHATSON_TITLE_DESC"
-            filter="string"
-            required="true"
-            class=""
-            labelclass=""
+            name="start_date"
+            type="hidden"
         />
         <field
-            name="alias"
-            type="text"
-            size="30"
-            label="COM_WHATSON_ALIAS_LABEL"
-            description="COM_WHATSON_ALIAS_DESC"
-            hint="COM_WHATSON_ALIAS_HINT"
-            filter="string"
-            class=""
-            labelclass=""
+            name="start_date_readable"
+            type="hidden"
         />
-            <field
-            name="owner_user_id"
-            type="user"
-            label="COM_WHATSON_OWNER_LABEL"
-            description="COM_WHATSON_OWNER_DESC"
-            default="COM_WHATSON_OWNER_DEFAULT"
-            filter="int"
-            class="inputbox"
-            required="true"
-        >
-            <option value="">COM_WHATSON_OWNER_DEFAULT</option>
-        </field>
-        <!-- Delete if not using categories: -->
         <field
-            name="catid"
-            type="category"
-            extension="com_whatson"
-            class="inputbox"
-            default=""
-            label="COM_WHATSON_CATEGORY_LABEL"
-            description="COM_WHATSON_CATEGORY_DESC"
-            required="true"
-            >
-             <option value="0">JOPTION_SELECT_CATEGORY</option>
-        </field>
-        <field name="state" type="list" label="JSTATUS"
-            description="JFIELD_PUBLISHED_DESC" class="chzn-color-state"
-            filter="intval" size="1" default="1"
-        >
-            <option value="1">
-                JPUBLISHED</option>
-            <option value="0">
-                JUNPUBLISHED</option>
-            <option value="2">
-                JARCHIVED</option>
-            <option value="-2">
-                JTRASHED</option>
-        </field>
+            name="user_id"
+            type="hidden"
+        />
+    </fieldset>
+    <fieldset
+        name="inputs"
+    >
+        <field
+            name="mon"
+            type="textarea"
+            label="COM_WHATSON_FIELD_DAY1_LABEL"
+            description=""
+            rows="2"
+            cols="7"
+            class="u-fill-width"
+        />
+        <field
+            name="tue"
+            type="textarea"
+            label="COM_WHATSON_FIELD_DAY2_LABEL"
+            description=""
+            rows="2"
+            cols="7"
+            class="u-fill-width"
+        />
+        <field
+            name="wed"
+            type="textarea"
+            label="COM_WHATSON_FIELD_DAY3_LABEL"
+            description=""
+            rows="2"
+            cols="7"
+            class="u-fill-width"
+        />
+        <field
+            name="thu"
+            type="textarea"
+            label="COM_WHATSON_FIELD_DAY4_LABEL"
+            description=""
+            rows="2"
+            cols="7"
+            class="u-fill-width"
+        />
+        <field
+            name="fri"
+            type="textarea"
+            label="COM_WHATSON_FIELD_DAY5_LABEL"
+            description=""
+            rows="2"
+            cols="7"
+            class="u-fill-width"
+        />
     </fieldset>
 </form>

@@ -46,14 +46,14 @@ class WhatsOnControllerEntry extends JControllerForm
      *
      * @return  boolean  True if the article can be added, false if not.
      */
-    public function add()
+    /*public function add()
     {
         if (!parent::add())
         {
             // Redirect to the return page.
             $this->setRedirect($this->getReturnPage());
         }
-    }
+    }*/
 
     /**
      * Method override to check if you can add a new record.
@@ -62,7 +62,7 @@ class WhatsOnControllerEntry extends JControllerForm
      *
      * @return  boolean
      */
-    protected function allowAdd($data = array())
+    /*protected function allowAdd($data = array())
     {
         /*$categoryId   = ArrayHelper::getValue($data, 'catid', $this->input->getInt('id'), 'int');
         $allow      = null;
@@ -76,11 +76,11 @@ class WhatsOnControllerEntry extends JControllerForm
         if ($allow !== null)
         {
             return $allow;
-        }*/
+        }* /
 
         // In the absense of better information, revert to the component permissions.
         return parent::allowAdd($data);
-    }
+    }*/
 
     /**
      * Method to check if you can add a new record.
@@ -90,7 +90,7 @@ class WhatsOnControllerEntry extends JControllerForm
      *
      * @return  boolean
      */
-    protected function allowEdit($data = array(), $key = 'id')
+    /*protected function allowEdit($data = array(), $key = 'id')
     {
         /*$recordId   = (int) isset($data[$key]) ? $data[$key] : 0;
         $categoryId = 0;
@@ -105,7 +105,7 @@ class WhatsOnControllerEntry extends JControllerForm
             // The category has been set. Check the category permissions.
             return JFactory::getUser()->authorise('core.edit', $this->option . '.category.' . $categoryId);
         }*/
-        $user    = JFactory::getUser();
+        /*$user    = JFactory::getUser();
         $user_id = $user->id;
 
         $record_id = (int) isset($data[$key]) ? $data[$key] : 0;
@@ -148,17 +148,17 @@ class WhatsOnControllerEntry extends JControllerForm
             {
                 return true;
             }
-        }
+        }* /
 
 
         /*if ($user->id == $data['created_by']) {
             return $user->authorise('core.edit.own', $this->option);
-        }*/
+        }* /
 
 
         // Since there is no asset tracking, revert to the component permissions.
         return parent::allowEdit($data, $key);
-    }
+    }*/
 
     /**
      * Method to cancel an edit.
@@ -167,15 +167,16 @@ class WhatsOnControllerEntry extends JControllerForm
      *
      * @return  boolean  True if access level checks pass, false otherwise.
      */
-    public function cancel($key = 'id')
+    /*public function cancel($key = 'id')
     {
         $return = parent::cancel($key);
 
         // Redirect to the return page.
         $this->setRedirect($this->getReturnPage());
 
+        * /
         return $return;
-    }
+    }*/
 
     /**
      * Method to edit an existing record.
@@ -185,10 +186,10 @@ class WhatsOnControllerEntry extends JControllerForm
      *
      * @return  boolean  True if access level check and checkout passes, false otherwise.
      */
-    public function edit($key = null, $urlVar = 'id')
+    /*public function edit($key = null, $urlVar = 'id')
     {
         return parent::edit($key, $urlVar);
-    }
+    }*/
 
     /**
      * Method to get a model object, loading it if required.
@@ -199,10 +200,10 @@ class WhatsOnControllerEntry extends JControllerForm
      *
      * @return  object  The model.
      */
-    public function getModel($name = 'entry', $prefix = '', $config = array('ignore_request' => true))
+    /*public function getModel($name = 'entry', $prefix = '', $config = array('ignore_request' => true))
     {
         return parent::getModel($name, $prefix, $config);
-    }
+    }*/
 
     /**
      * Gets the URL arguments to append to an item redirect.
@@ -212,7 +213,7 @@ class WhatsOnControllerEntry extends JControllerForm
      *
      * @return  string  The arguments to append to the redirect URL.
      */
-    protected function getRedirectToItemAppend($recordId = null, $urlVar = null)
+    /*protected function getRedirectToItemAppend($recordId = null, $urlVar = null)
     {
         $append = parent::getRedirectToItemAppend($recordId, $urlVar);
         $itemId = $this->input->getInt('Itemid');
@@ -229,14 +230,14 @@ class WhatsOnControllerEntry extends JControllerForm
         }
 
         return $append;
-    }
+    }*/
 
     /**
      * Get the return URL if a "return" variable has been passed in the request
      *
      * @return  string  The return URL.
      */
-    protected function getReturnPage()
+    /*protected function getReturnPage()
     {
         $return = $this->input->get('return', null, 'base64');
 
@@ -246,7 +247,7 @@ class WhatsOnControllerEntry extends JControllerForm
         }
 
         return base64_decode($return);
-    }
+    }*/
 
     /**
      * Method to save a record.
@@ -258,10 +259,17 @@ class WhatsOnControllerEntry extends JControllerForm
      */
     public function save($key = null, $urlVar = 'id')
     {
-        $is_ajax =  JFactory::getApplication()->input->get('ajax', '', 'bool');
-
+        $app    = JFactory::getApplication();
+        $jinput = $app->input;
+        
+        #echo '<pre>'; var_dump($jinput); echo '</pre>'; exit;
+        
+        
+        #$is_ajax =  JFactory::getApplication()->input->get('ajax', '', 'bool');
+        
         $result = parent::save($key, $urlVar);
-
+        #echo '<pre>'; var_dump($result); echo '</pre>'; exit;
+        /*
         if ($is_ajax) {
             $app = JFactory::getApplication();
             try {
@@ -291,7 +299,7 @@ class WhatsOnControllerEntry extends JControllerForm
             }
             $app->close();
             exit;
-        }
+        }*/
 
         // If ok, redirect to the return page.
         /*if ($result)

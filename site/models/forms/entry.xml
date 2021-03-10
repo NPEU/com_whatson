@@ -4,34 +4,72 @@
     addfieldpath="/administrator/components/com_whatson/models/fields"
 >
     <fieldset
-        name="inputs"
-        label="COM_WHATSON_FIELDSET_MAIN_LABEL"
+        name="hidden"
     >
         <field
             name="id"
             type="hidden"
         />
         <field
-            name="title"
-            type="text"
-            size="30"
-            label="COM_WHATSON_TITLE_LABEL"
-            description="COM_WHATSON_TITLE_DESC"
-            filter="string"
-            required="true"
-            class=""
-            labelclass=""
+            name="start_date"
+            type="hidden"
         />
         <field
-            name="alias"
-            type="text"
-            size="30"
-            label="COM_WHATSON_ALIAS_LABEL"
-            description="COM_WHATSON_ALIAS_DESC"
-            filter="string"
-            required="true"
-            class=""
-            labelclass=""
+            name="start_date_readable"
+            type="hidden"
+        />
+        <field
+            name="user_id"
+            type="hidden"
+        />
+    </fieldset>
+    <fieldset
+        name="inputs"
+    >
+        <field
+            name="mon"
+            type="textarea"
+            label="COM_WHATSON_FIELD_DAY1_LABEL"
+            description=""
+            rows="2"
+            cols="7"
+            class="u-fill-width"
+        />
+        <field
+            name="tue"
+            type="textarea"
+            label="COM_WHATSON_FIELD_DAY2_LABEL"
+            description=""
+            rows="2"
+            cols="7"
+            class="u-fill-width"
+        />
+        <field
+            name="wed"
+            type="textarea"
+            label="COM_WHATSON_FIELD_DAY3_LABEL"
+            description=""
+            rows="2"
+            cols="7"
+            class="u-fill-width"
+        />
+        <field
+            name="thu"
+            type="textarea"
+            label="COM_WHATSON_FIELD_DAY4_LABEL"
+            description=""
+            rows="2"
+            cols="7"
+            class="u-fill-width"
+        />
+        <field
+            name="fri"
+            type="textarea"
+            label="COM_WHATSON_FIELD_DAY5_LABEL"
+            description=""
+            rows="2"
+            cols="7"
+            class="u-fill-width"
         />
     </fieldset>
 </form>

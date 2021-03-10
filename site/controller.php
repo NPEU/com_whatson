@@ -26,6 +26,10 @@ class WhatsOnController extends JControllerLegacy
      */
     public function display($cachable = false, $urlparams = false)
     {
+        $this->input->set('view', 'whatson');
+        return parent::display($cachable, $urlparams);
+        
+        /*
         #$cachable  = true; // Huh? Why not just put that in the constructor?
         #$user      = JFactory::getUser();
 
@@ -48,7 +52,7 @@ class WhatsOnController extends JControllerLegacy
         /*if (JFactory::getUser()->id ||($this->input->getMethod() == 'POST' && $vName = 'categories'))
         {
             $cachable = false;
-        }*/
+        }* /
 
         $safeurlparams = array(
             'id'                => 'INT',
@@ -67,5 +71,6 @@ class WhatsOnController extends JControllerLegacy
         }
 
         return parent::display($cachable, $safeurlparams);
+        */
     }
 }

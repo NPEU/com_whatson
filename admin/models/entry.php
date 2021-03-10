@@ -92,6 +92,9 @@ class WhatsOnModelEntry extends JModelAdmin
      */
     protected function loadFormData()
     {
+        // We won't need to get the data directly - the WhatsOn doesn't work like that.
+        return array();
+        /*
         // Check the session for previously entered form data.
         $data = JFactory::getApplication()->getUserState(
             'com_whatson.edit.entry.data',
@@ -103,6 +106,7 @@ class WhatsOnModelEntry extends JModelAdmin
         }
 
         return $data;
+        */
     }
 
     /**
@@ -144,7 +148,7 @@ class WhatsOnModelEntry extends JModelAdmin
      *
      * @return  void
      */
-    protected function prepareTable($table)
+    /*protected function prepareTable($table)
     {
         $date = JFactory::getDate();
         $user = JFactory::getUser();
@@ -168,8 +172,8 @@ class WhatsOnModelEntry extends JModelAdmin
             $table->created    = $date->toSql();
             $table->created_by = $user->id;
         }
-        */
-    }
+        * /
+    }*/
 
     /**
      * Method to prepare the saved data.
@@ -180,9 +184,35 @@ class WhatsOnModelEntry extends JModelAdmin
      */
     public function save($data)
     {
-        $is_new = empty($data['id']);
-        $input  = JFactory::getApplication()->input;
+        #$is_new = empty($data['id']);
         $app    = JFactory::getApplication();
+        $input  = $app->input;
+        
+        $entry_id = $data['start_date'] . '.' . $data['user_id'];
+        // WhatsOn entries aren't like tradition 'items' so there's a bit of a mismatch between
+        // this and Joomla's default handling of things. Best effort so far is to simply check here
+        // if there's already a row, and if there is, add the `id` to the data so the entry get
+        // updated, otherwise added.
+        
+ 
+        #
+        $db     = JFactory::getDbo();
+        $query = $db->getQuery(true);
+       
+        $query->select($query->qn('id'))
+              ->from($query->qn('#__whatson'))
+              ->where($query->qn('id') .' = ' . $query->q($entry_id));
+        $db->setQuery($query);
+        
+        #echo '<pre>'; var_dump((string) $query); echo '</pre>'; exit;
+        
+        $entry_exists = $db->loadResult();
+        
+        if ($entry_exists) {
+            $data['id'] = $entry_id;
+        }
+        
+        #echo '<pre>'; var_dump($entry_exists); echo '</pre>'; exit;
 
         // Get parameters:
         //$params = JComponentHelper::getParams(JRequest::getVar('option'));

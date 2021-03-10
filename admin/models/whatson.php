@@ -95,7 +95,7 @@ class WhatsOnModelWhatsOn extends JModelList
      *
      * @return      string  An SQL query
      */
-    protected function getListQuery()
+    /*protected function getListQuery()
     {
         // Initialize variables.
         $db    = JFactory::getDbo();
@@ -112,7 +112,7 @@ class WhatsOnModelWhatsOn extends JModelList
 
         // Join the categories table again for the project group (delete if not using categories):
         /*$query->select('c.title AS category_title')
-            ->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON ' . $db->qn('c.id') . ' = ' . $db->qn('a.catid'));*/
+            ->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON ' . $db->qn('c.id') . ' = ' . $db->qn('a.catid'));* /
 
         // Join over the users for the checked out user.
         $query->select('uc.name AS editor')
@@ -135,7 +135,7 @@ class WhatsOnModelWhatsOn extends JModelList
         elseif (is_array($categoryId))
         {
             $query->where($db->quoteName('a.catid') . ' IN (' . implode(',', ArrayHelper::toInteger($categoryId)) . ')');
-        }*/
+        }* /
 
         // Filter: like / search
         $search = $this->getState('filter.search');
@@ -166,5 +166,7 @@ class WhatsOnModelWhatsOn extends JModelList
         $query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
 
         return $query;
+        */
     }
+    
 }
