@@ -12,16 +12,7 @@ CREATE TABLE `#__whatson` (
   `fri` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 )
-    ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 
-delimiter //
-
-CREATE TRIGGER generate_id BEFORE INSERT ON `#__whatson`
-FOR EACH ROW
-BEGIN
-    SET NEW.id = CONCAT(NEW.start_date, '.', NEW.user_id);
-END; //
-
-
-delimiter ;
+CREATE TRIGGER `generate_id` BEFORE INSERT ON `#__whatson` FOR EACH ROW SET NEW.id = CONCAT(NEW.start_date, '.', NEW.user_id);
