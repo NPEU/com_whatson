@@ -43,7 +43,7 @@
         <file>controller.php</file>
         <file>whatson.php</file>
         <file>index.html</file>
-        <file>router.php</file>
+        <file>routerX.php</file>
         <folder>controllers</folder>
         <folder>language</folder>
         <folder>models</folder>
