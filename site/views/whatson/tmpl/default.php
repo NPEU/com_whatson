@@ -91,7 +91,7 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
 <form method="get" action="<?php echo $_SERVER['SCRIPT_URL']; ?>" class="u-text-group u-text-group--wide-space">
     <span class="c-composite">
         <input type="date" name="date" value="<?php echo date('Y-m-d', $this->week_timestamps['Monday']); ?>"<?php if (!$this->user->authorise('core.admin')): ?> min="<?php echo date('Y-m-d', $this->current_week_timestamps['Monday']); ?>"<?php endif; ?>>
-        <button>Go to date</button>
+        <button class="t-staff-area">Go to date</button>
     </span>
     <?php if ($this->current_week_timestamps['Monday'] != $this->week_timestamps['Monday']) : ?>
     <span> or </span>
@@ -127,8 +127,8 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                     </select>
                     <?php /*<label for="whatson_filter_just_me">Show just me:</label> <input type="checkbox" name="whatson_filter_just_me" id="whatson_filter_just_me" value="<?php echo $this->user->name; ?>" filterable_preset> */?>
                     <span class="u-text-group  u-text-group--push-apart">
-                        <button id="whatson_filter_only_me" value="<?php echo $this->user->name; ?>">Show only me</button>
-                        <input type="reset" value="Clear filters" filterable_reset>
+                        <button id="whatson_filter_only_me" value="<?php echo $this->user->name; ?>" class="t-staff-area">Show only me</button>
+                        <button type="reset" filterable_reset class="t-staff-area">Clear filters</button>
                     </span>
                     <input type="hidden" id="whatson_filter" filterable_input>
                 </p>
@@ -189,7 +189,7 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
 
     <!--<div class="table-scroll-wrap">-->
         
-        <table id="<?php echo $table_id; ?>" class="whatson-table  table--sticky-header" border="1" cellspacing="0" cellpadding="5" role="table" filterable_list>
+        <table id="<?php echo $table_id; ?>" class="whatson-table  table--sticky-header  t-staff-area" border="1" cellspacing="0" cellpadding="5" role="table" filterable_list>
             <thead>
                 <tr role="row">
                     <th role="columnheader"><?php echo week_link($this->start_date, '-'); ?></th>
