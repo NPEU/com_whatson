@@ -166,7 +166,7 @@ class WhatsOnModelWhatsOn extends JModelList
         $query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
 
         return $query;
-        */
-    }
+        
+    }*/
     
 }
