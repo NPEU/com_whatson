@@ -98,21 +98,7 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
     <span><a href="<?php echo $_SERVER['SCRIPT_URL']; ?>">Back to today</a></span>
     <?php endif; ?>
 </form>
-<?php
- /*
-<table aria-hidden="true" class="whatson-table">
-    <thead>
-        <tr>
-            <th><?php echo week_link($this->start_date, '-'); ?></th>
-            <th>&nbsp;</th>
-            <?php foreach($this->week_timestamps as $day_timestamp): ?>
-            <th><?php echo date('D j<\s\u\p>S</\s\u\p> F', $day_timestamp); #echo JText::_($field->label); ?></th>
-            <?php endforeach; ?>
-            <th><?php echo week_link($this->start_date, '+'); ?></th>
-        </tr>
-    </thead>
-</table>
-*/ ?>
+
 <form action="<?php echo $_SERVER['REQUEST_URI']; ?>&task=entry.save" method="post">
 
     <div filterable_group>
@@ -132,62 +118,12 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                     </span>
                     <input type="hidden" id="whatson_filter" filterable_input>
                 </p>
-                <?php /*<p>
-                    <select name="testing">
-                        <option>Testing</option>
-                        <option>Another</option>
-                        <option selected>BooYA</option>
-                        <option>Cheese</option>
-                    </select>
-                </p>
-                <p>
-                    <select name="testing2" multiple>
-                        <option>Frogs</option>
-                        <option>Logs</option>
-                        <option selected>Dogs</option>
-                        <option>Bogs</option>
-                        <option>Cogs</option>
-                        <option selected>Sprogs</option>
-                    </select>
-                </p>
-                <p>
-                    <select name="testing3" multiple>
-                        <option value="Gigs1">Gigs</option>
-                        <option value="Jigs2" selected>Jigs</option>
-                        <option value="Sprigs3" selected>Sprigs</option>
-                        <option value="Digs4">Digs</option>
-                        <option value="Cigs5">Cigs</option>
-                    </select>
-                </p>*/ ?>
-                <?php /*<div>
-                    <label for="filter">Search:</label>
-                    <input id="filter" filterable_input>
-                    <input type="reset" value="Clear" filterable_reset>
-                </div>
-                <div>
-                    <label for="filter_just_me">Just me:</label> <input type="checkbox" name="filter_just_me" id="filter_just_me" value="<?php echo $this->user_profile->name; ?>" filterable_preset>
-                </div>
-                <?php /*<fieldset class="c-tool-form__fieldset">
-                    <div>
-                        <legend>Filter by:</legend>
-                        <span class="c-tool-form__group">
-                            <label for="filter_title">Title:</label> <input type="radio" name="filter_choice" id="filter_title" filterable_toggle="title">
-                        </span>
-                        <span class="c-tool-form__group">
-                            <label for="filter_lead">Lead:</label> <input type="radio" name="filter_choice" id="filter_lead" filterable_toggle="lead">
-                        </span>
-                        <span class="c-tool-form__group">
-                            <label for="filter_all">Both:</label> <input type="radio" name="filter_choice" id="filter_all" filterable_toggle checked>
-                        </span>
-                    </div>
-                </fieldset>*/ ?>
             </form>
         </script>
         <script type="text/template" filterable_empty_list_template>
             <p filterable_empty_list_message hidden>No matches found.</p>
         </script>
 
-    <!--<div class="table-scroll-wrap">-->
         
         <table id="<?php echo $table_id; ?>" class="whatson-table  table--sticky-header  t-staff-area" border="1" cellspacing="0" cellpadding="5" role="table" filterable_list>
             <thead>
@@ -310,21 +246,5 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                 <?php endforeach; ?>
             </tbody>
         </table>
-    <!--</div>-->
+    </div>
 </form>
-<?php /*
-<script>
-$(document).ready(function() {
-    $('#<?php echo $table_id; ?>').DataTable({
-        "paging":      false,
-        "ordering":    false,
-        "info":        false,
-        "scrollX":     true,
-        "fixedHeader": true,
-        "fixedColumns": {
-            leftColumns: 2
-        }
-    });
-} );
-</script>
-*/ ?>
