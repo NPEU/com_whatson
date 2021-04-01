@@ -19,6 +19,9 @@ $language_tag = 'en-GB';
 $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);*/
 
+// Require helper file
+JLoader::register('WhatsOnHelper', JPATH_COMPONENT . '/helpers/whatson.php');
+
 if (!JFactory::getUser()->authorise('core.manage', 'com_whatson'))
 {
     throw new JAccessExceptionNotallowed(JText::_('JERROR_ALERTNOAUTHOR'), 403);
