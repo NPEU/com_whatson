@@ -6,13 +6,11 @@
         description="COM_WHATSON_CONFIG_RECORDS_SETTINGS_DESC"
     >
         <field
-            name="email_admins"
-            type="textarea"
-            label="COM_WHATSON_CONFIG_EMAIL_ADMINS_LABEL"
-            description="COM_WHATSON_CONFIG_EMAIL_ADMINS_DESC"
-            cols="50"
-            rows="10"
-            filter="string"
+            name="default_value"
+            type="text"
+            label="COM_WHATSON_CONFIG_DEFAULT_VALUE_LABEL"
+            description="COM_WHATSON_CONFIG_DEFAULT_VALUE_DESC"
+            default="Unit"
         />
     </fieldset>
 
