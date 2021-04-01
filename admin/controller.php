@@ -32,7 +32,7 @@ class WhatsOnController extends JControllerLegacy
         $id     = $this->input->getInt('id');
 
         // Check for edit form.
-        if ($view == 'entry' && $layout == 'edit' && !$this->checkEditId('com_whatson.edit.entry', $id))
+        /*if ($view == 'entry' && $layout == 'edit' && !$this->checkEditId('com_whatson.edit.entry', $id))
         {
             // Somehow the person just went to the form - we don't allow that.
             $this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
@@ -40,7 +40,7 @@ class WhatsOnController extends JControllerLegacy
             $this->setRedirect(JRoute::_('index.php?option=com_whatson&view=whatson', false));
 
             return false;
-        }
+        }*/
 
         return parent::display();
     }
