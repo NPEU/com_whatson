@@ -95,7 +95,7 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
     </span>
     <?php if ($this->current_week_timestamps['Monday'] != $this->week_timestamps['Monday']) : ?>
     <span> or </span>
-    <span><a href="<?php echo $_SERVER['SCRIPT_URL']; ?>">Back to today</a></span>
+    <span><a href="<?php echo $_SERVER['SCRIPT_URL']; ?>" class="c-cta">Back to today</a></span>
     <?php endif; ?>
 </form>
 
@@ -103,22 +103,20 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
 
     <div filterable_group>
         <script type="text/template" filterable_form_template>
-            <form class="c-tool-form  c-panel  d-bands  u-space--below">
-                <p>
-                    <label for="whatson_filter_staff">Filter staff:</label>
-                    <select id="whatson_filter_staff" multiple filterable_preset>
-                        <?php foreach($this->staff as $staff_member): ?>
-                        <option value="<?php echo $staff_member['name']; ?>"><?php echo $staff_member['name']; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <?php /*<label for="whatson_filter_just_me">Show just me:</label> <input type="checkbox" name="whatson_filter_just_me" id="whatson_filter_just_me" value="<?php echo $this->user->name; ?>" filterable_preset> */?>
-                    <span class="u-text-group  u-text-group--push-apart">
-                        <button id="whatson_filter_only_me" value="<?php echo $this->user->name; ?>" class="t-staff-area">Show only me</button>
-                        <button type="reset" filterable_reset class="t-staff-area">Clear filters</button>
-                    </span>
-                    <input type="hidden" id="whatson_filter" filterable_input>
-                </p>
-            </form>
+            <div class="u-space--below">
+                <label for="whatson_filter_staff">Filter staff:</label>
+                <select id="whatson_filter_staff" multiple filterable_preset>
+                    <?php foreach($this->staff as $staff_member): ?>
+                    <option value="<?php echo $staff_member['name']; ?>"><?php echo $staff_member['name']; ?></option>
+                    <?php endforeach; ?>
+                </select>
+                <?php /*<label for="whatson_filter_just_me">Show just me:</label> <input type="checkbox" name="whatson_filter_just_me" id="whatson_filter_just_me" value="<?php echo $this->user->name; ?>" filterable_preset> */?>
+                <span class="u-text-group  u-text-group--push-apart">
+                    <button id="whatson_filter_only_me" value="<?php echo $this->user->name; ?>" class="t-staff-area">Show only me</button>
+                    <button type="reset" filterable_reset class="t-staff-area">Clear filters</button>
+                </span>
+                <input type="hidden" id="whatson_filter" filterable_input>
+            </div>
         </script>
         <script type="text/template" filterable_empty_list_template>
             <p filterable_empty_list_message hidden>No matches found.</p>
