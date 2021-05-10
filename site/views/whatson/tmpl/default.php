@@ -160,8 +160,8 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
 
                 ?>
                 <tr id="user-<?php echo $staff_id; ?>" role="row" filterable_item>
-                    <td role="cell"><?php echo week_link($this->start_date, '-', $staff_id); ?></td>
-                    <td<?php if ($editing_this_row) : ?> class="t-success  is-editing"<?php endif; ?> role="cell">
+                    <td role="cell"<?php if ($staff_id < 3) : ?> class="t-warning"<?php endif; ?>><?php echo week_link($this->start_date, '-', $staff_id); ?></td>
+                    <td<?php if ($editing_this_row) : ?> class="t-success  is-editing"<?php elseif ($staff_id < 3) : ?> class="t-warning"<?php endif; ?> role="cell">
                         <p class="m-nav" hidden>
                             <?php echo week_link($this->start_date, '-', $staff_id); ?>
                             <?php echo week_link($this->start_date, '+', $staff_id); ?>
@@ -173,7 +173,7 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                             </span>
                             
                             <?php if (!$editing_this_row && $can_edit_row) : ?>
-                            <span>[<a href="<?php echo $_SERVER['SCRIPT_URL']; ?>?date=<?php echo date('Y-m-d', $this->start_date); ?>&edit=<?php echo $staff_id; ?>#user-<?php echo $staff_id; ?>">EDIT</a>]</span>
+                            <span class="u-space--left--xs">[<a href="<?php echo $_SERVER['SCRIPT_URL']; ?>?date=<?php echo date('Y-m-d', $this->start_date); ?>&edit=<?php echo $staff_id; ?>#user-<?php echo $staff_id; ?>">EDIT</a>]</span>
                             <?php endif; ?>
                             
                             <?php if ($editing_this_row) : ?>
@@ -187,23 +187,24 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                             <input type="hidden" name="return" value="<?php echo base64_encode($this->current_view_uri . '#user-' . $staff_id); ?>" />
                             <?php echo JHtml::_('form.token'); ?>
                             
-                            <button type="submit" name="task" id="whatson-save" value="entry.save">Save</button>
+                            <button type="submit" name="task" id="whatson-save" value="entry.save" class="u-space--left--xs">Save</button>
+                            <a href="<?php echo $_SERVER['SCRIPT_URL']; ?>?date=<?php echo date('Y-m-d', $this->start_date); ?>" class="u-space--left--xs">Cancel</a>
                             <?php endif; ?>
                         </p>
                         <?php if ((!empty($staff_member['tel'])) || (!empty($staff_member['room']))): ?>
-                        <p>
+                        <p class="c-utilitext  u-text-size--medium">
                             <?php if (!empty($staff_member['tel'])): ?>
-                            <span><?php echo $staff_member['tel']; ?></span>
+                            <svg height="20" width="20" focusable="false" class="icon  u-space--right--xs" aria-hidden="true"><use xlink:href="#icon-phone"></use></svg> <span><?php echo $staff_member['tel']; ?></span>
                             <?php endif; ?>
                             <?php if (!empty($staff_member['room'])): ?>
-                            <span><?php echo $staff_member['room']; ?></span>
+                            <a href="/staff-area/whos-where#<?php echo strtolower(str_replace('/', '-', $staff_member['room'])); ?>"<?php if (!empty($staff_member['tel'])): ?> class="u-space--left--s"<?php endif; ?>><svg height="20" width="20" focusable="false" class="icon  u-space--right--xs" aria-hidden="true"><use xlink:href="#icon-map-pin"></use></svg> <span><?php echo $staff_member['room']; ?></span></a>
                             <?php endif; ?>
                         </p>
                         <?php endif; ?>
                     </td>
                     <?php foreach($inputs_fieldset as $field): ?>
                     
-                    <td<?php if ($editing_this_row) : ?> class="t-success  is-editing"<?php endif; ?> data-day="<?php echo ucfirst($field->getAttribute('name')); ?>" role="cell">       
+                    <td<?php if ($editing_this_row) : ?> class="t-success  is-editing"<?php elseif ($staff_id < 3) : ?> class="t-warning"<?php endif; ?> data-day="<?php echo ucfirst($field->getAttribute('name')); ?>" role="cell">       
                         
                         <?php 
                         $day   = $field->getAttribute('name');
@@ -239,8 +240,8 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                     </td>
                     
                     <?php endforeach; ?>
-                    <td role="cell"><?php echo week_link($this->start_date, '+', $staff_id); ?></td>
-                </tR>
+                    <td role="cell"<?php if ($staff_id < 3) : ?> class="t-warning"<?php endif; ?>><?php echo week_link($this->start_date, '+', $staff_id); ?></td>
+                </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
