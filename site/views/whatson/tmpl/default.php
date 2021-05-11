@@ -99,7 +99,8 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
     <?php endif; ?>
 </form>
 
-<form action="<?php echo $_SERVER['REQUEST_URI']; ?>&task=entry.save" method="post">
+<?php /*<form action="<?php echo $_SERVER['REQUEST_URI']; ?>&task=entry.save" method="post">*/ ?>
+<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 
     <div filterable_group>
         <script type="text/template" filterable_form_template>
@@ -112,7 +113,7 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                 </select>
                 <?php /*<label for="whatson_filter_just_me">Show just me:</label> <input type="checkbox" name="whatson_filter_just_me" id="whatson_filter_just_me" value="<?php echo $this->user->name; ?>" filterable_preset> */?>
                 <span class="u-text-group  u-text-group--push-apart">
-                    <button id="whatson_filter_only_me" value="<?php echo $this->user->name; ?>" class="t-staff-area">Show only me</button>
+                    <button id="whatson_filter_only_me" value="<?php echo $this->user->name; ?>" class="t-staff-area" type="button">Show only me</button>
                     <button type="reset" filterable_reset class="t-staff-area">Clear filters</button>
                 </span>
                 <input type="hidden" id="whatson_filter" filterable_input>
