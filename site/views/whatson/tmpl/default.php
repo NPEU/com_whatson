@@ -69,7 +69,7 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
 
     $user = JFactory::getUser();
     $new_stamp = strtotime(date('Y-m-d', $start_date) . ' ' . $plus_minus . ' 1 week');
-    
+
     $current_week_timestamps = WhatsOnHelper::getWeekDayTimestamps();
     if ($new_stamp < $current_week_timestamps['Monday'] && !$user->authorise('core.admin')) {
         return '&nbsp;';
@@ -88,17 +88,21 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
 
 ?>
 <h2>Week beginning <?php echo date('j<\s\u\p>S</\s\u\p> F Y', $this->week_timestamps['Monday']); ?></h2>
-<form method="get" action="<?php echo $_SERVER['SCRIPT_URL']; ?>" class="u-text-group u-text-group--wide-space">
-    <span class="c-composite">
-        <input type="date" name="date" value="<?php echo date('Y-m-d', $this->week_timestamps['Monday']); ?>"<?php if (!$this->user->authorise('core.admin')): ?> min="<?php echo date('Y-m-d', $this->current_week_timestamps['Monday']); ?>"<?php endif; ?>>
-        <button class="t-staff-area">Go to date</button>
-    </span>
-    <?php if ($this->current_week_timestamps['Monday'] != $this->week_timestamps['Monday']) : ?>
-    <span> or </span>
-    <span><a href="<?php echo $_SERVER['SCRIPT_URL']; ?>" class="c-cta">Back to today</a></span>
-    <?php endif; ?>
-</form>
-
+<div class="u-text-group u-text-group--push-apart  u-space--below">
+        <form method="get" action="<?php echo $_SERVER['SCRIPT_URL']; ?>" class="u-text-group u-text-group--wide-space  u-space--below--none">
+            <span class="c-composite">
+                <input type="date" name="date" value="<?php echo date('Y-m-d', $this->week_timestamps['Monday']); ?>"<?php if (!$this->user->authorise('core.admin')): ?> min="<?php echo date('Y-m-d', $this->current_week_timestamps['Monday']); ?>"<?php endif; ?>>
+                <button class="t-staff-area">Go to date</button>
+            </span>
+            <?php if ($this->current_week_timestamps['Monday'] != $this->week_timestamps['Monday']) : ?>
+            <span> or </span>
+            <span><a href="<?php echo $_SERVER['SCRIPT_URL']; ?>" class="c-cta">Back to today</a></span>
+            <?php endif; ?>
+        </form>
+        <p>
+            <a href="/user-profile/edit" class="c-cta">Change my WhatsOn preferences</a>
+        </p>
+</div>
 <?php /*<form action="<?php echo $_SERVER['REQUEST_URI']; ?>&task=entry.save" method="post">*/ ?>
 <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 
@@ -123,7 +127,7 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
             <p filterable_empty_list_message hidden>No matches found.</p>
         </script>
 
-        
+
         <table id="<?php echo $table_id; ?>" class="whatson-table  table--sticky-header  t-staff-area" border="1" cellspacing="0" cellpadding="5" role="table" filterable_list>
             <thead>
                 <tr role="row">
@@ -143,7 +147,7 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                 $edit_link = JRoute::_('index.php?option=com_whatson&task=entry.edit&id=' . $row->id);
                 */
                 $staff_id = $staff_member['id'];
-                
+
                 $is_own_row = false;
                 if ($this->user->authorise('core.edit.own', 'com_whatson') && ($this->user->id == $staff_id)) {
                     $is_own_row = true;
@@ -153,7 +157,7 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                 if ($is_own_row) {
                     $can_edit_row = true;
                 }
-                
+
                 $editing_this_row = false;
                 if ($can_edit_row && $this->editing_user_row == $staff_id) {
                     $editing_this_row = true;
@@ -172,22 +176,22 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                                 <span filterable_index><?php echo $staff_member['first_name']; ?></span>
                                 <b filterable_index><?php echo $staff_member['last_name']; ?></b>
                             </span>
-                            
+
                             <?php if (!$editing_this_row && $can_edit_row) : ?>
                             <span class="u-space--left--xs">[<a href="<?php echo $_SERVER['SCRIPT_URL']; ?>?date=<?php echo date('Y-m-d', $this->start_date); ?>&edit=<?php echo $staff_id; ?>#user-<?php echo $staff_id; ?>">EDIT</a>]</span>
                             <?php endif; ?>
-                            
+
                             <?php if ($editing_this_row) : ?>
-                            
+
                             <?php if (WhatsOnHelper::getArrayValue($this->items, $staff_id)) : ?>
-                            <input type="hidden" name="jform[id]" id="jform_id" value="<?php echo $this->week_timestamps['Monday'] . '.' . $staff_id; ?>"> 
+                            <input type="hidden" name="jform[id]" id="jform_id" value="<?php echo $this->week_timestamps['Monday'] . '.' . $staff_id; ?>">
                             <?php endif; ?>
                             <input type="hidden" name="jform[start_date]" id="jform_start_date" value="<?php echo $this->week_timestamps['Monday']; ?>">
                             <input type="hidden" name="jform[start_date_readable]" id="jform_start_date_readable" value="<?php echo date('Y-m-d H:i:s', $this->week_timestamps['Monday']);; ?>">
                             <input type="hidden" name="jform[user_id]" id="jform_user_id" value="<?php echo $staff_id; ?>">
                             <input type="hidden" name="return" value="<?php echo base64_encode($this->current_view_uri . '#user-' . $staff_id); ?>" />
                             <?php echo JHtml::_('form.token'); ?>
-                            
+
                             <button type="submit" name="task" id="whatson-save" value="entry.save" class="u-space--left--xs">Save</button>
                             <a href="<?php echo $_SERVER['SCRIPT_URL']; ?>?date=<?php echo date('Y-m-d', $this->start_date); ?>" class="u-space--left--xs">Cancel</a>
                             <?php endif; ?>
@@ -204,10 +208,10 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                         <?php endif; ?>
                     </td>
                     <?php foreach($inputs_fieldset as $field): ?>
-                    
-                    <td<?php if ($editing_this_row) : ?> class="t-success  is-editing"<?php elseif ($staff_id < 3) : ?> class="t-warning"<?php endif; ?> data-day="<?php echo ucfirst($field->getAttribute('name')); ?>" role="cell">       
-                        
-                        <?php 
+
+                    <td<?php if ($editing_this_row) : ?> class="t-success  is-editing"<?php elseif ($staff_id < 3) : ?> class="t-warning"<?php endif; ?> data-day="<?php echo ucfirst($field->getAttribute('name')); ?>" role="cell">
+
+                        <?php
                         $day   = $field->getAttribute('name');
                         $week  = date('W', $this->week_timestamps['Monday']);
                         $value = WhatsOnHelper::getWhatsOnValue(
@@ -218,11 +222,11 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                         );
                         ?>
                         <?php if ($editing_this_row) : ?>
-                        <?php                     
+                        <?php
                         $hint = WhatsOnHelper::getWhatsOnPref($staff_id, $day, $week);
                         if (!$hint) {
                             $hint = WhatsOnHelper::getWhatsOnDefault();
-                        } 
+                        }
                         $field->hint = $hint;
 
                         $entry = WhatsOnHelper::getWhatsOnEntry($this->items, $staff_id, $day);
@@ -231,7 +235,7 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                         }
                         ?>
                         <?php echo $field->input; ?>
-                        
+
                         <?php /*<script type="text/template" whatson-input>
                         <?php echo $field->input; ?>
                         </script>*/ ?>
@@ -239,7 +243,7 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                         <?php echo $value; ?>
                         <?php endif; ?>
                     </td>
-                    
+
                     <?php endforeach; ?>
                     <td role="cell"<?php if ($staff_id < 3) : ?> class="t-warning"<?php endif; ?>><?php echo week_link($this->start_date, '+', $staff_id); ?></td>
                 </tr>
