@@ -262,13 +262,26 @@ class WhatsOnControllerEntry extends JControllerForm
         $app    = JFactory::getApplication();
         $jinput = $app->input;
         
-        #echo '<pre>'; var_dump($jinput); echo '</pre>'; exit;
+        #echo '<pre>'; var_dump($this->text_prefix); echo '</pre>'; exit;
         
+        // So this is a bit of a hack. The way the WhatsOn model works for adding/deleting filters
+        // is a hack too, and abuses the save task, so we also need to hack/abuse the lang string
+        // to get it to shaw a sensible success message.
+        // The save message is defined in libraries/src/MVC/Controller/FormController.php and most
+        // of it is hard-coded except for the text_prefix, so we hijack that: ...
+        // (resolves to site lang string: COM_WHATSON_FILTER_ADDED_SAVE_SUCCESS or 
+        // COM_WHATSON_FILTER_DELETED_SAVE_SUCCESS)
+        $action = $jinput->get('action', false);
         
-        #$is_ajax =  JFactory::getApplication()->input->get('ajax', '', 'bool');
+        if ($action == 'add-new-filter') {
+            $this->text_prefix = 'COM_WHATSON_FILTER_ADDED';
+        }
+        if ($action == 'delete-filter') {
+            $this->text_prefix = 'COM_WHATSON_FILTER_DELETED';
+        }  
         
         $result = parent::save($key, $urlVar);
-        #echo '<pre>'; var_dump($result); echo '</pre>'; exit;
+
         /*
         if ($is_ajax) {
             $app = JFactory::getApplication();

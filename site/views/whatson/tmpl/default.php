@@ -86,6 +86,20 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
     return $return;
 }
 
+
+// 'Custom test' => 'Fiona Alderdice|Benjamin Allin|Noon Altijani'
+$whatson_filters = [
+    'Show only me' => $this->user->name,
+];
+
+if (!empty($this->user_profile->profile['whatson_filters'])) {
+    foreach ($this->user_profile->profile['whatson_filters'] as $filter) {
+        $whatson_filters[$filter['whatson_filter_name']] = $filter['whatson_filter_value'];
+    }
+}
+
+#echo '<pre>'; var_dump($whatson_filters); echo '</pre>'; exit;
+
 ?>
 <h2>Week beginning <?php echo date('j<\s\u\p>S</\s\u\p> F Y', $this->week_timestamps['Monday']); ?></h2>
 <div class="u-text-group u-text-group--push-apart  u-space--below">
@@ -105,6 +119,9 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
 </div>
 <?php /*<form action="<?php echo $_SERVER['REQUEST_URI']; ?>&task=entry.save" method="post">*/ ?>
 <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+    <input type="hidden" name="return" value="<?php echo base64_encode($this->current_view_uri); ?>" />
+    <input type="hidden" name="task" value="entry.save" />
+    <?php echo JHtml::_('form.token'); ?>
 
     <div filterable_group>
         <script type="text/template" filterable_form_template>
@@ -117,10 +134,23 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                 </select>
                 <?php /*<label for="whatson_filter_just_me">Show just me:</label> <input type="checkbox" name="whatson_filter_just_me" id="whatson_filter_just_me" value="<?php echo $this->user->name; ?>" filterable_preset> */?>
                 <span class="u-text-group  u-text-group--push-apart">
-                    <button id="whatson_filter_only_me" value="<?php echo $this->user->name; ?>" class="t-staff-area" type="button">Show only me</button>
-                    <button type="reset" filterable_reset class="t-staff-area">Clear filters</button>
+                    <span id="whatson-filters">
+                        <?php foreach ($whatson_filters as $label => $value) : ?>
+                        <span class="c-composite">
+                            <button class="t-staff-area  whatson-filter-button" value="<?php echo $value ?>"  type="button"><?php echo $label ?></button><?php if ($label != 'Show only me') : ?>
+                            <button class="t-staff-area  whatson-filter-button--delete" name="action" value="delete-filter" type="submit" aria-label="Delete filter <?php echo $label ?>">&times;</button><?php endif; ?>
+                        </span>
+                        <?php endforeach; ?>
+                    </span>
+                    <span>
+                        <span class="c-composite" id="new_filter" hidden>
+                            <input type="text" name="new_filter_name" id="new_filter_name">
+                            <button type="submit" id="add_new_filter" name="action" value="add-new-filter">Add new filter</button>
+                        </span>
+                        <button type="reset" filterable_reset class="t-staff-area">Clear filters</button>
+                    </span>
                 </span>
-                <input type="hidden" id="whatson_filter" filterable_input>
+                <input type="hidden" id="whatson_filter" filterable_input name="whatson_filter">
             </div>
         </script>
         <script type="text/template" filterable_empty_list_template>
@@ -190,9 +220,8 @@ function week_link($start_date, $plus_minus = '+', $user_id = false) {
                             <input type="hidden" name="jform[start_date_readable]" id="jform_start_date_readable" value="<?php echo date('Y-m-d H:i:s', $this->week_timestamps['Monday']);; ?>">
                             <input type="hidden" name="jform[user_id]" id="jform_user_id" value="<?php echo $staff_id; ?>">
                             <input type="hidden" name="return" value="<?php echo base64_encode($this->current_view_uri . '#user-' . $staff_id); ?>" />
-                            <?php echo JHtml::_('form.token'); ?>
 
-                            <button type="submit" name="task" id="whatson-save" value="entry.save" class="u-space--left--xs">Save</button>
+                            <button type="submit" id="whatson-save" class="u-space--left--xs">Save</button>
                             <a href="<?php echo $_SERVER['SCRIPT_URL']; ?>?date=<?php echo date('Y-m-d', $this->start_date); ?>" class="u-space--left--xs">Cancel</a>
                             <?php endif; ?>
                         </p>
