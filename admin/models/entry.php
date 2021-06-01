@@ -152,7 +152,7 @@ class WhatsOnModelEntry extends JModelAdmin
     {
         $date = JFactory::getDate();
         $user = JFactory::getUser();
-        
+
         $table->text = htmlspecialchars_decode($table->text, ENT_QUOTES);
 
         /*
@@ -182,36 +182,217 @@ class WhatsOnModelEntry extends JModelAdmin
      *
      * @return  boolean  True on success, False on error.
      */
+    /*public function savefilter($data)
+    {
+        $app    = JFactory::getApplication();
+        $input  = $app->input;
+
+        echo '<pre>'; var_dump($input); echo '</pre>'; exit;
+    }*/
+
+    /**
+     * Method to prepare the saved data.
+     *
+     * @param   array  $data  The form data.
+     *
+     * @return  boolean  True on success, False on error.
+     */
     public function save($data)
     {
         #$is_new = empty($data['id']);
         $app    = JFactory::getApplication();
         $input  = $app->input;
-        
+        $db     = JFactory::getDbo();
+        $user   = JFactory::getUser();
+        #echo '<pre>'; var_dump($input); echo '</pre>'; exit;
+
+        // This form can also be used to save a filter, instead of updating the WhatsOn, so check
+        // for that here.
+        $action           = $input->get('action', false);
+        #echo '<pre>'; var_dump($action); echo '</pre>'; exit;
+
+        $new_filter_name  = $input->get('new_filter_name', false);
+        $filter_value     = $input->getString('whatson_filter', '');
+
+
+        $profile_key = 'staffprofile.whatson_filters';
+        #echo '<pre>'; var_dump($new_filter_name); echo '</pre>'; #exit;
+        #echo '<pre>'; var_dump($filter_value); echo '</pre>'; exit;
+
+        if ($action == 'add-new-filter' || $action == 'delete-filter') {
+           
+            // We're CRUDing a filter, so we need to get any existing ones, prepare the data,
+            // then process.
+            // Template: {"whatson_filters<<<N>>>":{"whatson_filter_name":"<<<NAME>>>","whatson_filter_value":"<<<NAME>>>"}}
+            $query = $db->getQuery(true);
+
+            $query->select($db->qn('profile_value'))
+                  ->from($db->qn('#__user_profiles'))
+                  ->where($db->qn('user_id') .' = ' . $db->q($user->id))
+                  ->where($db->qn('profile_key') .' = ' . $db->q($profile_key));
+            $db->setQuery($query);
+
+            $whatson_filters = $db->loadResult();
+            #echo '<pre>'; var_dump($whatson_filters); echo '</pre>';
+
+            if (empty($whatson_filters)) {
+                $whatson_filters = [];
+                $has_filters = false;
+            } else {
+                $has_filters = true;
+
+                // Make a list of names to make it easier to check if one exists:
+                $filter_names = [];
+
+                if (!empty($whatson_filters)) {
+                    $whatson_filters = json_decode($whatson_filters, true);
+
+                    foreach ($whatson_filters as $key => $filter) {
+                        $filter_names[] = $filter['whatson_filter_name'];
+                    }
+                }
+                ////
+            }
+
+            $whatson_filters_json = false;
+
+            // If we want to delete a filter ...
+            if ($action == 'delete-filter') {
+                // ... and the ARE some in the database:
+                if (!$has_filters) {
+                    // No filters to delete - quit.
+                    return true;
+                }
+
+                // We need to rebuild the filters array, skipping the one we're deleting, so the
+                // query below would be an UPDATE, but if we may end up with an empty array
+                // (last filter deleted) we need to delete the row.
+                $tmp_filters = [];
+                $i = 0;
+                foreach ($whatson_filters as $key => $filter) {
+
+                    if ($filter['whatson_filter_value'] == $filter_value) {
+                        continue;
+                    }
+                    $tmp_filters['whatson_filters' . $i] = $filter;
+                    $i++;
+                }
+                $whatson_filters = $tmp_filters;
+
+                if (!empty($whatson_filters)) {
+                    $whatson_filters_json = json_encode($whatson_filters);
+                }
+                ////
+                #echo '<pre>'; var_dump($filter_value); echo '</pre>'; #exit;
+                #echo '<pre>'; var_dump($whatson_filters); echo '</pre>'; exit;
+            }
+
+            // If we want to add a filter and we have a name and value:
+            if ($action == 'add-new-filter' && !empty($new_filter_name) && !empty($filter_value)) {
+
+                #echo '<pre>'; var_dump('DB: ' . $whatson_filters); echo '</pre>'; exit;
+
+
+                // If the name exists we have to override it:
+                if (in_array($new_filter_name, $filter_names)) {
+                    $filter_names[$new_filter_name] = $filter_value;
+                } else {
+                    // Create a new filter entry:
+                    $new_filter = [
+                        'whatson_filter_name'  => $new_filter_name,
+                        'whatson_filter_value' => $filter_value
+                    ];
+                    $whatson_filters['whatson_filters' . count($whatson_filters)] = $new_filter;
+                }
+
+                $whatson_filters_json = json_encode($whatson_filters);
+
+                #echo '<pre>'; var_dump((string) $query); echo '</pre>'; exit;
+                #echo '<pre>'; var_dump($whatson_filters); echo '</pre>'; exit;
+                #echo '<pre>'; var_dump($filter_names); echo '</pre>'; exit;
+                #echo '<pre>'; var_dump($whatson_filters_json); echo '</pre>'; exit;
+                #echo '<pre>'; var_dump($has_filters); echo '</pre>'; exit;
+                #$query = $db->getQuery(true);
+
+            }
+
+            $query->clear();
+
+            #echo '<pre>'; var_dump($whatson_filters_json); echo '</pre>'; #exit;
+            #echo '<pre>'; var_dump($has_filters); echo '</pre>'; exit;
+
+            // If we have some existing filters AND one has been submitted/deleted, UPDATE:
+            if ($has_filters && !empty($whatson_filters_json)) {
+                $query->update($db->qn('#__user_profiles'))
+                      ->set($db->qn('profile_value') . ' = ' . $db->q($whatson_filters_json))
+                      ->where(array(
+                            $db->qn('user_id') . ' = ' . $user->id,
+                            $db->qn('profile_key') . ' = ' . $db->q($profile_key)
+                        ));
+
+                $db->setQuery($query);
+                $result = $db->execute();
+
+                return true;
+            }
+
+            // If we have some existing filters, but the last one has been deleted, DELETE:
+            if ($has_filters && empty($whatson_filters_json)) {
+                $query->delete($db->qn('#__user_profiles'))
+                      ->where(array(
+                            $db->qn('user_id') . ' = ' . $user->id,
+                            $db->qn('profile_key') . ' = ' . $db->q($profile_key)
+                        ));
+
+                $db->setQuery($query);
+                $result = $db->execute();
+
+                return true;
+            }
+
+            // We don't have any existing filters but one has been submitted, so INSERT that:
+            if (!$has_filters && !empty($whatson_filters_json)) {
+                // Prepare the insert query.
+                $columns = array('user_id', 'profile_key', 'profile_value', 'ordering');
+                $values  = array($user->id, $db->q($profile_key), $db->q($whatson_filters_json), 32);
+
+                $query->insert($db->qn('#__user_profiles'))
+                      ->columns($db->qn($columns))
+                      ->values(implode(',', $values));
+
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($query);
+                $db->execute();
+
+                return true;
+            }
+
+        }
+
+
+
         $entry_id = $data['start_date'] . '.' . $data['user_id'];
-        // WhatsOn entries aren't like tradition 'items' so there's a bit of a mismatch between
+        // WhatsOn entries aren't like traditional 'items' so there's a bit of a mismatch between
         // this and Joomla's default handling of things. Best effort so far is to simply check here
         // if there's already a row, and if there is, add the `id` to the data so the entry get
         // updated, otherwise added.
-        
- 
-        #
-        $db     = JFactory::getDbo();
+
+
         $query = $db->getQuery(true);
-       
+
         $query->select($query->qn('id'))
               ->from($query->qn('#__whatson'))
               ->where($query->qn('id') .' = ' . $query->q($entry_id));
         $db->setQuery($query);
-        
+
         #echo '<pre>'; var_dump((string) $query); echo '</pre>'; exit;
-        
+
         $entry_exists = $db->loadResult();
-        
+
         if ($entry_exists) {
             $data['id'] = $entry_id;
         }
-        
+
         #echo '<pre>'; var_dump($entry_exists); echo '</pre>'; exit;
 
         // Get parameters:
