@@ -178,14 +178,21 @@ if (!empty($this->user_profile->profile['whatson_filters'])) {
                 */
                 $staff_id = $staff_member['id'];
 
-                $is_own_row = false;
-                if ($this->user->authorise('core.edit.own', 'com_whatson') && ($this->user->id == $staff_id)) {
-                    $is_own_row = true;
-                }
-
-                $can_edit_row = $this->can_edit_all;
-                if ($is_own_row) {
+                // ID's less than 600 are not registered users, they've been added manually.
+                // E.g. Events, Visitors.
+                if ($staff_id < 600) {
+                    // For now assume all users can edit these rows.
                     $can_edit_row = true;
+                } else {
+                    $is_own_row = false;
+                    if ($this->user->authorise('core.edit.own', 'com_whatson') && ($this->user->id == $staff_id)) {
+                        $is_own_row = true;
+                    }
+
+                    $can_edit_row = $this->can_edit_all;
+                    if ($is_own_row) {
+                        $can_edit_row = true;
+                    }
                 }
 
                 $editing_this_row = false;
