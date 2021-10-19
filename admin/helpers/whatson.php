@@ -164,7 +164,7 @@ class WhatsOnHelper extends JHelperContent
         return false;
     }
     
-    public static function getWeekDayTimestamps($stamp = false)
+    public static function getWeekDayTimestamps($stamp = false, $longname = true)
     {
         if (!$stamp) {
             $stamp = time();
@@ -179,11 +179,11 @@ class WhatsOnHelper extends JHelperContent
 
         #$start_week_stamp = mktime(0, 0, 0, $date_parts['mon'], $date_parts['mday'] - $offset, $date_parts['year']);
         
-        $return['Monday']    = mktime(0, 0, 0, $date_parts['mon'], ($date_parts['mday'] - $offset), $date_parts['year']);
-        $return['Tuesday']   = mktime(0, 0, 0, $date_parts['mon'], ($date_parts['mday'] - $offset) + 1, $date_parts['year']);
-        $return['Wednesday'] = mktime(0, 0, 0, $date_parts['mon'], ($date_parts['mday'] - $offset) + 2, $date_parts['year']);
-        $return['Thursday']  = mktime(0, 0, 0, $date_parts['mon'], ($date_parts['mday'] - $offset) + 3, $date_parts['year']);
-        $return['Friday']    = mktime(0, 0, 0, $date_parts['mon'], ($date_parts['mday'] - $offset) + 4, $date_parts['year']);
+        $return['Mon' . ($longname ? 'day' : '')]    = mktime(0, 0, 0, $date_parts['mon'], ($date_parts['mday'] - $offset), $date_parts['year']);
+        $return['Tue' . ($longname ? 'sday' : '')]   = mktime(0, 0, 0, $date_parts['mon'], ($date_parts['mday'] - $offset) + 1, $date_parts['year']);
+        $return['Wed' . ($longname ? 'nesday' : '')] = mktime(0, 0, 0, $date_parts['mon'], ($date_parts['mday'] - $offset) + 2, $date_parts['year']);
+        $return['Thu' . ($longname ? 'rsday' : '')]  = mktime(0, 0, 0, $date_parts['mon'], ($date_parts['mday'] - $offset) + 3, $date_parts['year']);
+        $return['Fri' . ($longname ? 'day' : '')]    = mktime(0, 0, 0, $date_parts['mon'], ($date_parts['mday'] - $offset) + 4, $date_parts['year']);
         
         #echo '<pre>'; var_dump(self::getDateReadable($start_week_stamp)); echo '</pre>'; #exit; 
         #echo '<pre>'; var_dump($return); echo '</pre>'; exit; 
