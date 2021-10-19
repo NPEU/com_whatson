@@ -92,6 +92,17 @@ $whatson_filters = [
     'Show only me' => $this->user->name,
 ];
 
+// Work out if the TODAY is present on screen:
+// (Note this could probably be done in a much better way, but it confuses me)
+$today = false;
+$showing_week_timestamps = WhatsOnHelper::getWeekDayTimestamps($this->start_date, false);
+$current_week_timestamps = WhatsOnHelper::getWeekDayTimestamps(false, false);
+if ($showing_week_timestamps['Mon'] == $current_week_timestamps['Mon']) {
+    // The presented week is the same as the TODAY week.
+    $today = strtolower(date('D'));
+}
+////
+
 if (!empty($this->user_profile->profile['whatson_filters'])) {
     foreach ($this->user_profile->profile['whatson_filters'] as $filter) {
         $whatson_filters[$filter['whatson_filter_name']] = $filter['whatson_filter_value'];
@@ -245,10 +256,14 @@ if (!empty($this->user_profile->profile['whatson_filters'])) {
                     </td>
                     <?php foreach($inputs_fieldset as $field): ?>
 
-                    <td<?php if ($editing_this_row) : ?> class="t-success  is-editing"<?php elseif ($staff_id < 3) : ?> class="t-warning"<?php endif; ?> data-day="<?php echo ucfirst($field->getAttribute('name')); ?>" role="cell">
+                    <?php
+                    $day = $field->getAttribute('name');
+                    ?>
+
+                    <td<?php if ($editing_this_row) : ?> class="t-success  is-editing"<?php elseif ($staff_id < 3) : ?> class="t-warning"<?php endif; ?> data-day="<?php echo ucfirst($field->getAttribute('name')); ?>" role="cell"<?php if ($day == $today) : ?> aria-current="day"<?php endif; ?>>
 
                         <?php
-                        $day   = $field->getAttribute('name');
+                        
                         $week  = date('W', $this->week_timestamps['Monday']);
                         $value = WhatsOnHelper::getWhatsOnValue(
                             $this->items,
