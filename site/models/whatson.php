@@ -30,7 +30,7 @@ class WhatsOnModelWhatsOn extends JModelList
 	 */
 	protected function _getList($query, $limitstart = 0, $limit = 0)
 	{
-		$this->getDbo()->setQuery($query, $limitstart, $limit);
+		$this->getDbo()->setQuery($query, 0, 0);
 
 		return $this->getDbo()->loadObjectList('user_id');
 	}
