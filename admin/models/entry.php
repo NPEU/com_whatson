@@ -220,7 +220,7 @@ class WhatsOnModelEntry extends JModelAdmin
         #echo '<pre>'; var_dump($filter_value); echo '</pre>'; exit;
 
         if ($action == 'add-new-filter' || $action == 'delete-filter') {
-           
+
             // We're CRUDing a filter, so we need to get any existing ones, prepare the data,
             // then process.
             // Template: {"whatson_filters<<<N>>>":{"whatson_filter_name":"<<<NAME>>>","whatson_filter_value":"<<<NAME>>>"}}
@@ -235,6 +235,7 @@ class WhatsOnModelEntry extends JModelAdmin
             $whatson_filters = $db->loadResult();
             #echo '<pre>'; var_dump($whatson_filters); echo '</pre>';
 
+            $filter_names = [];
             if (empty($whatson_filters)) {
                 $whatson_filters = [];
                 $has_filters = false;
@@ -242,8 +243,6 @@ class WhatsOnModelEntry extends JModelAdmin
                 $has_filters = true;
 
                 // Make a list of names to make it easier to check if one exists:
-                $filter_names = [];
-
                 if (!empty($whatson_filters)) {
                     $whatson_filters = json_decode($whatson_filters, true);
 
@@ -370,27 +369,28 @@ class WhatsOnModelEntry extends JModelAdmin
         }
 
 
+        if (array_key_exists('start_date', $data) && array_key_exists('user_id', $data)) {
+            $entry_id = $data['start_date'] . '.' . $data['user_id'];
+            // WhatsOn entries aren't like traditional 'items' so there's a bit of a mismatch between
+            // this and Joomla's default handling of things. Best effort so far is to simply check here
+            // if there's already a row, and if there is, add the `id` to the data so the entry get
+            // updated, otherwise added.
 
-        $entry_id = $data['start_date'] . '.' . $data['user_id'];
-        // WhatsOn entries aren't like traditional 'items' so there's a bit of a mismatch between
-        // this and Joomla's default handling of things. Best effort so far is to simply check here
-        // if there's already a row, and if there is, add the `id` to the data so the entry get
-        // updated, otherwise added.
 
+            $query = $db->getQuery(true);
 
-        $query = $db->getQuery(true);
+            $query->select($query->qn('id'))
+                ->from($query->qn('#__whatson'))
+                ->where($query->qn('id') .' = ' . $query->q($entry_id));
+            $db->setQuery($query);
 
-        $query->select($query->qn('id'))
-              ->from($query->qn('#__whatson'))
-              ->where($query->qn('id') .' = ' . $query->q($entry_id));
-        $db->setQuery($query);
+            #echo '<pre>'; var_dump((string) $query); echo '</pre>'; exit;
 
-        #echo '<pre>'; var_dump((string) $query); echo '</pre>'; exit;
+            $entry_exists = $db->loadResult();
 
-        $entry_exists = $db->loadResult();
-
-        if ($entry_exists) {
-            $data['id'] = $entry_id;
+            if ($entry_exists) {
+                $data['id'] = $entry_id;
+            }
         }
 
         #echo '<pre>'; var_dump($entry_exists); echo '</pre>'; exit;
