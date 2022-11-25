@@ -1,9 +1,4 @@
 <?php
-if (!empty($_SERVER['JTV2'])) {
-    include(str_replace('.php', '.v2.php', __FILE__));
-    return;
-}
-?><?php if (empty($_SERVER['JTV2'])) {
 /**
  * @package     Joomla.Site
  * @subpackage  com_whatson
@@ -118,20 +113,26 @@ if (!empty($this->user_profile->profile['whatson_filters'])) {
 
 ?>
 <h2>Week beginning <?php echo date('j<\s\u\p>S</\s\u\p> F Y', $this->week_timestamps['Monday']); ?></h2>
-<div class="u-text-group u-text-group--push-apart  u-space--below">
-        <form method="get" action="<?php echo $_SERVER['SCRIPT_URL']; ?>" class="u-text-group u-text-group--wide-space  u-space--below--none">
-            <span class="c-composite">
-                <input type="date" name="date" value="<?php echo date('Y-m-d', $this->week_timestamps['Monday']); ?>"<?php if (!$this->user->authorise('core.admin')): ?> min="<?php echo date('Y-m-d', $this->current_week_timestamps['Monday']); ?>"<?php endif; ?>>
-                <button class="t-staff-area">Go to date</button>
-            </span>
-            <?php if ($this->current_week_timestamps['Monday'] != $this->week_timestamps['Monday']) : ?>
-            <span> or </span>
-            <span><a href="<?php echo $_SERVER['SCRIPT_URL']; ?>" class="c-cta">Back to today</a></span>
-            <?php endif; ?>
-        </form>
-        <p>
-            <a href="/user-profile/edit" class="c-cta">Change my WhatsOn preferences</a>
-        </p>
+<div class="l-layout  l-row  l-row--push-apart  l-gutter  l-flush-edge-gutter">
+    <div class="l-layout__inner">
+        <div class="l-box">
+            <form method="get" action="<?php echo $_SERVER['SCRIPT_URL']; ?>" class="u-text-group u-text-group--wide-space  u-space--below--none">
+                <span class="c-composite">
+                    <input type="date" name="date" value="<?php echo date('Y-m-d', $this->week_timestamps['Monday']); ?>"<?php if (!$this->user->authorise('core.admin')): ?> min="<?php echo date('Y-m-d', $this->current_week_timestamps['Monday']); ?>"<?php endif; ?>>
+                    <button>Go to date</button>
+                </span>
+                <?php if ($this->current_week_timestamps['Monday'] != $this->week_timestamps['Monday']) : ?>
+                <span> or </span>
+                <span><a href="<?php echo $_SERVER['SCRIPT_URL']; ?>" class="c-cta">Back to today</a></span>
+                <?php endif; ?>
+            </form>
+        </div>
+        <div class="l-box">
+            <p>
+                <a href="/user-profile/edit" class="c-cta">Change my WhatsOn preferences</a>
+            </p>
+        </div>
+    </div>
 </div>
 <?php /*<form action="<?php echo $_SERVER['REQUEST_URI']; ?>&task=entry.save" method="post">*/ ?>
 <form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
@@ -141,7 +142,7 @@ if (!empty($this->user_profile->profile['whatson_filters'])) {
 
     <div filterable_group>
         <script type="text/template" filterable_form_template>
-            <div class="u-space--below">
+            <div class="l-box--space--block-end">
                 <label for="whatson_filter_staff">Filter staff:</label>
                 <select id="whatson_filter_staff" multiple filterable_preset>
                     <?php foreach($this->staff as $staff_member): ?>
@@ -149,21 +150,23 @@ if (!empty($this->user_profile->profile['whatson_filters'])) {
                     <?php endforeach; ?>
                 </select>
                 <?php /*<label for="whatson_filter_just_me">Show just me:</label> <input type="checkbox" name="whatson_filter_just_me" id="whatson_filter_just_me" value="<?php echo $this->user->name; ?>" filterable_preset> */?>
-                <span class="u-text-group  u-text-group--push-apart">
-                    <span id="whatson-filters">
-                        <?php foreach ($whatson_filters as $label => $value) : ?>
-                        <span class="c-composite">
-                            <button class="t-staff-area  whatson-filter-button" value="<?php echo $value ?>"  type="button"><?php echo $label ?></button><?php if ($label != 'Show only me') : ?>
-                            <button class="t-staff-area  whatson-filter-button--delete" name="action" value="delete-filter" type="submit" aria-label="Delete filter <?php echo $label ?>">&times;</button><?php endif; ?>
+                <span class="l-layout  l-row  l-row--push-apart  l-gutter  l-flush-edge-gutter">
+                    <span class="l-layout__inner">
+                        <span class="l-box" id="whatson-filters">
+                            <?php foreach ($whatson_filters as $label => $value) : ?>
+                            <span class="c-composite">
+                                <button class="whatson-filter-button" value="<?php echo $value ?>"  type="button"><?php echo $label ?></button><?php if ($label != 'Show only me') : ?>
+                                <button class="whatson-filter-button--delete" name="action" value="delete-filter" type="submit" aria-label="Delete filter <?php echo $label ?>">&times;</button><?php endif; ?>
+                            </span>
+                            <?php endforeach; ?>
                         </span>
-                        <?php endforeach; ?>
-                    </span>
-                    <span>
-                        <span class="c-composite" id="new_filter" hidden>
-                            <input type="text" name="new_filter_name" id="new_filter_name">
-                            <button type="submit" id="add_new_filter" name="action" value="add-new-filter">Add new filter</button>
+                        <span class="l-box">
+                            <span class="c-composite" id="new_filter" hidden>
+                                <input type="text" name="new_filter_name" id="new_filter_name" class="c-composite--expand">
+                                <button type="submit" id="add_new_filter" name="action" value="add-new-filter">Add new filter</button>
+                            </span>
+                            <button type="reset" filterable_reset>Clear filters</button>
                         </span>
-                        <button type="reset" filterable_reset class="t-staff-area">Clear filters</button>
                     </span>
                 </span>
                 <input type="hidden" id="whatson_filter" filterable_input name="whatson_filter">
@@ -174,7 +177,7 @@ if (!empty($this->user_profile->profile['whatson_filters'])) {
         </script>
 
 
-        <table id="<?php echo $table_id; ?>" class="whatson-table  table--sticky-header  t-staff-area" border="1" cellspacing="0" cellpadding="5" role="table" filterable_list>
+        <table id="<?php echo $table_id; ?>" class="whatson-table  table--sticky-header" border="1" cellspacing="0" cellpadding="5" role="table" filterable_list>
             <thead>
                 <tr role="row">
                     <th role="columnheader"><?php echo week_link($this->start_date, '-'); ?></th>
@@ -268,7 +271,7 @@ if (!empty($this->user_profile->profile['whatson_filters'])) {
                     <td<?php if ($editing_this_row) : ?> class="t-success  is-editing"<?php elseif ($staff_id < 3) : ?> class="t-warning"<?php endif; ?> data-day="<?php echo ucfirst($field->getAttribute('name')); ?>" role="cell"<?php if ($day == $today) : ?> aria-current="day"<?php endif; ?>>
 
                         <?php
-                        
+
                         $week  = date('W', $this->week_timestamps['Monday']);
                         $value = WhatsOnHelper::getWhatsOnValue(
                             $this->items,
@@ -308,7 +311,3 @@ if (!empty($this->user_profile->profile['whatson_filters'])) {
         </table>
     </div>
 </form>
-
-<?php
-}
-?>
