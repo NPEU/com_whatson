@@ -22,10 +22,10 @@ defined('_JEXEC') or die;
 #use Joomla\Registry\Registry;
 #use Joomla\String\StringHelper;
 use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\AdminModel;
-
 
 
 /**
@@ -184,37 +184,17 @@ class EntryModel extends AdminModel
         $db     = $this->getDbo();
 
         // Get parameters:
-        #$params = \Joomla\CMS\Component\ComponentHelper::getParams(JRequest::getVar('option'));
-        $params = \Joomla\CMS\Component\ComponentHelper::getParams($input->get('option'));
-
-        // For reference if needed:
-        // By default we're only looking for and acting upon the 'email admins' setting.
-        // If any other settings are related to this save method, add them here.
-        /*$email_admins_string = $params->get('email_admins');
-        if (!empty($email_admins_string) && $is_new) {
-            $email_admins = explode(PHP_EOL, trim($email_admins_string));
-            foreach ($email_admins as $email) {
-                // Sending email as an array to make it easier to expand; it's quite likely that a
-                // real app would need more info here.
-                $email_data = array('email' => $email);
-                $this->_sendEmail($email_data);
-            }
-        }*/
-
-        #echo '<pre>'; var_dump($input); echo '</pre>'; exit;
+        $params = ComponentHelper::getParams($input->get('option'));
 
         // This form can also be used to save a filter, instead of updating the WhatsOn, so check
         // for that here.
         $action           = $input->get('action', false);
-        #echo '<pre>'; var_dump($action); echo '</pre>'; exit;
 
         $new_filter_name  = $input->get('new_filter_name', false);
         $filter_value     = $input->getString('whatson_filter', '');
 
 
         $profile_key = 'staffprofile.whatson_filters';
-        #echo '<pre>'; var_dump($new_filter_name); echo '</pre>'; #exit;
-        #echo '<pre>'; var_dump($filter_value); echo '</pre>'; exit;
 
         if ($action == 'add-new-filter' || $action == 'delete-filter') {
 
@@ -230,7 +210,6 @@ class EntryModel extends AdminModel
             $db->setQuery($query);
 
             $whatson_filters = $db->loadResult();
-            #echo '<pre>'; var_dump($whatson_filters); echo '</pre>';
 
             $filter_names = [];
             if (empty($whatson_filters)) {
@@ -279,15 +258,10 @@ class EntryModel extends AdminModel
                     $whatson_filters_json = json_encode($whatson_filters);
                 }
                 ////
-                #echo '<pre>'; var_dump($filter_value); echo '</pre>'; #exit;
-                #echo '<pre>'; var_dump($whatson_filters); echo '</pre>'; exit;
             }
 
             // If we want to add a filter and we have a name and value:
             if ($action == 'add-new-filter' && !empty($new_filter_name) && !empty($filter_value)) {
-
-                #echo '<pre>'; var_dump('DB: ' . $whatson_filters); echo '</pre>'; exit;
-
 
                 // If the name exists we have to override it:
                 if (in_array($new_filter_name, $filter_names)) {
@@ -302,14 +276,6 @@ class EntryModel extends AdminModel
                 }
 
                 $whatson_filters_json = json_encode($whatson_filters);
-
-                #echo '<pre>'; var_dump((string) $query); echo '</pre>'; exit;
-                #echo '<pre>'; var_dump($whatson_filters); echo '</pre>'; exit;
-                #echo '<pre>'; var_dump($filter_names); echo '</pre>'; exit;
-                #echo '<pre>'; var_dump($whatson_filters_json); echo '</pre>'; exit;
-                #echo '<pre>'; var_dump($has_filters); echo '</pre>'; exit;
-                #$query = $db->getQuery(true);
-
             }
 
             $query->clear();
