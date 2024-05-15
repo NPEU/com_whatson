@@ -6,11 +6,13 @@
         description="COM_WHATSON_CONFIG_RECORDS_SETTINGS_DESC"
     >
         <field
-            name="default_value"
-            type="text"
-            label="COM_WHATSON_CONFIG_DEFAULT_VALUE_LABEL"
-            description="COM_WHATSON_CONFIG_DEFAULT_VALUE_DESC"
-            default="Unit"
+            name="email_admins"
+            type="textarea"
+            label="COM_WHATSON_CONFIG_EMAIL_ADMINS_LABEL"
+            description="COM_WHATSON_CONFIG_EMAIL_ADMINS_DESC"
+            cols="50"
+            rows="10"
+            filter="string"
         />
     </fieldset>
 
@@ -18,12 +20,12 @@
         description="JCONFIG_PERMISSIONS_DESC"
         label="JCONFIG_PERMISSIONS_LABEL"
     >
-
         <field name="rules" type="rules"
             component="com_whatson"
             filter="rules"
             validate="rules"
             label="JCONFIG_PERMISSIONS_LABEL"
-            section="component" />
+            section="component"
+        />
     </fieldset>
 </config>
