@@ -203,10 +203,10 @@ class EntryModel extends AdminModel
             // Template: {"whatson_filters<<<N>>>":{"whatson_filter_name":"<<<NAME>>>","whatson_filter_value":"<<<NAME>>>"}}
             $query = $db->getQuery(true);
 
-            $query->select($db->qn('profile_value'))
-                  ->from($db->qn('#__user_profiles'))
-                  ->where($db->qn('user_id') .' = ' . $db->q($user->id))
-                  ->where($db->qn('profile_key') .' = ' . $db->q($profile_key));
+            $query->select($db->quoteName('profile_value'))
+                  ->from($db->quoteName('#__user_profiles'))
+                  ->where($db->quoteName('user_id') .' = ' . $db->quote($user->id))
+                  ->where($db->quoteName('profile_key') .' = ' . $db->quote($profile_key));
             $db->setQuery($query);
 
             $whatson_filters = $db->loadResult();
@@ -285,11 +285,11 @@ class EntryModel extends AdminModel
 
             // If we have some existing filters AND one has been submitted/deleted, UPDATE:
             if ($has_filters && !empty($whatson_filters_json)) {
-                $query->update($db->qn('#__user_profiles'))
-                      ->set($db->qn('profile_value') . ' = ' . $db->q($whatson_filters_json))
+                $query->update($db->quoteName('#__user_profiles'))
+                      ->set($db->quoteName('profile_value') . ' = ' . $db->quote($whatson_filters_json))
                       ->where(array(
-                            $db->qn('user_id') . ' = ' . $user->id,
-                            $db->qn('profile_key') . ' = ' . $db->q($profile_key)
+                            $db->quoteName('user_id') . ' = ' . $user->id,
+                            $db->quoteName('profile_key') . ' = ' . $db->quote($profile_key)
                         ));
 
                 $db->setQuery($query);
@@ -300,10 +300,10 @@ class EntryModel extends AdminModel
 
             // If we have some existing filters, but the last one has been deleted, DELETE:
             if ($has_filters && empty($whatson_filters_json)) {
-                $query->delete($db->qn('#__user_profiles'))
+                $query->delete($db->quoteName('#__user_profiles'))
                       ->where(array(
-                            $db->qn('user_id') . ' = ' . $user->id,
-                            $db->qn('profile_key') . ' = ' . $db->q($profile_key)
+                            $db->quoteName('user_id') . ' = ' . $user->id,
+                            $db->quoteName('profile_key') . ' = ' . $db->quote($profile_key)
                         ));
 
                 $db->setQuery($query);
@@ -316,10 +316,10 @@ class EntryModel extends AdminModel
             if (!$has_filters && !empty($whatson_filters_json)) {
                 // Prepare the insert query.
                 $columns = array('user_id', 'profile_key', 'profile_value', 'ordering');
-                $values  = array($user->id, $db->q($profile_key), $db->q($whatson_filters_json), 32);
+                $values  = array($user->id, $db->quote($profile_key), $db->quote($whatson_filters_json), 32);
 
-                $query->insert($db->qn('#__user_profiles'))
-                      ->columns($db->qn($columns))
+                $query->insert($db->quoteName('#__user_profiles'))
+                      ->columns($db->quoteName($columns))
                       ->values(implode(',', $values));
 
                 // Set the query using our newly populated query object and execute it.

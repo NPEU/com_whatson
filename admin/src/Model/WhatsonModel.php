@@ -117,8 +117,8 @@ class WhatsonModel extends ListModel
 
         // Create the select statement.
         $query->select('*')
-              ->from($db->qn('#__whatson'))
-              ->where($db->qn('start_date') . ' = ' . $db->q($start_date));
+              ->from($db->quoteName('#__whatson'))
+              ->where($db->quoteName('start_date') . ' = ' . $db->quote($start_date));
 
         #echo '<pre>'; var_dump((string) $query); echo '</pre>';exit;
 
@@ -144,7 +144,7 @@ class WhatsonModel extends ListModel
         $query->select($db->quoteName('o.name', 'owner_name'))
             ->select($db->quoteName('o.username', 'owner_username'))
             ->select($db->quoteName('o.email', 'owner_email'))
-            ->join('LEFT', $db->quoteName('#__users', 'o') . ' ON ' . $db->qn('o.id') . ' = ' . $db->qn('a.owner_user_id'));
+            ->join('LEFT', $db->quoteName('#__users', 'o') . ' ON ' . $db->quoteName('o.id') . ' = ' . $db->quoteName('a.owner_user_id'));
 
 
         // Filter: like / search

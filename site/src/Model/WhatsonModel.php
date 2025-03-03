@@ -53,8 +53,8 @@ class WhatsonModel extends \NPEU\Component\Whatson\Administrator\Model\WhatsonMo
 
         // Create the select statement.
         $query->select('*')
-              ->from($db->qn('#__whatson'))
-              ->where($db->qn('start_date') . ' = ' . $db->q($start_date));
+              ->from($db->quoteName('#__whatson'))
+              ->where($db->quoteName('start_date') . ' = ' . $db->quote($start_date));
 
         #echo '<pre>'; var_dump((string) $query); echo '</pre>';exit;
 
